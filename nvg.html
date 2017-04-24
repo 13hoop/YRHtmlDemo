@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>尝试封装一些常见插件</title>
+    <script src="jQuery2.1.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style type="text/css">
+        body {
+            background: #eee;
+        }
+
+        ul,li, a{
+            /*border: 1px saddlebrown solid;*/
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            text-decoration: none;
+        }
+
+        .clearFix::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .nvgBar1 {
+            margin: 10px;
+        }
+        .nvgBar2 {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h3>nvg bar 封装</h3>
+    <div class="nvgBar1"></div>
+    <div class="nvgBar2"></div>
+    <script>
+        /*
+            导航栏
+            由一个opt参数传入所有的数据，由一个div容器直接调用
+        */ 
+        $.fn.initNvgBar = function(opt) {
+            $('<style>').prop("type", "text/css").html(
+            "li.selected_nvg {" +
+                "border-bottom: 0px;" +
+                "border-left: 1px saddlebrown solid;" +
+                "border-top: 1px saddlebrown solid;" +
+                "border-right: 1px saddlebrown solid;" +
+                "border-radius: 5px 5px 0px 0px;" +
+                "background: lightblue" +
+            "}" +
+            ".iterm_nvg {" +
+                "float: left;" + 
+                "height: 40px;" +
+                "width: 100px;" +
+                "text-align: center;" +
+                "border: 0px;" +
+                "border-bottom: 1px saddlebrown solid;" +
+            "}" +
+            ".clearFix::after {" +
+                "content: '';" +
+                "display: block;" +
+                "clear: both;" +
+            "}" +
+            ".content {" +
+                "height: 300px" +
+            "}" +
+            ".content li{" +
+                "display: none;" + 
+                "background: lightblue" +
+            "}" +
+            "li.actived_Content_nvg {" +
+                "display: block;" +
+            "}"
+            )
+            .appendTo("head");
+            var $ulTitle = $('<ul class="clearFix"></ul>').css({
+                'list-style': 'none',
+                'padding': '0px',
+                'margin': '0px',
+                'text-decoration': 'none',
+            })
+            var $ulContent = $('<ul class="content clearFix"></ul>').css('background','lightblue')
+            $(this).prepend($ulTitle)            
+            $(this).append($ulContent)
+            $.each(opt.data, function(idx, obj) {
+                var $liTitle = $('<li class="iterm_nvg"><a href="#">' + obj + '</a></li>')
+                var $liContent = $('<li>' + obj + '</li>')
+                if(idx == 0) {
+                    $liTitle.addClass('selected_nvg')
+                    $liContent.addClass('actived_Content_nvg')
+                }
+                $ulTitle.append($liTitle)
+                $ulContent.append($liContent)
+            })
+            $ulTitle.find('a').css({
+                'line-height': '40px',
+                'height': '40px',
+                'display': 'inline-block'
+            })
+            $ulTitle.on('click','.iterm_nvg', function(e){
+                var $c_target = $(e.currentTarget)
+                var c_index = $c_target.index()
+                $c_target.addClass('selected_nvg').siblings('.iterm_nvg').removeClass('selected_nvg')
+                $c_target.closest('div').find('.content li').eq(c_index).addClass('actived_Content_nvg').siblings('li').removeClass('actived_Content_nvg')
+                if(opt.callBack) {
+                    opt.callBack(c_index)
+                }
+            })
+        }
+        
+        $('.nvgBar1').initNvgBar({data: ['项目1', '项目2', '项目3', '项目4', '项目5']})
+        $('.nvgBar2').initNvgBar({
+            data: ['AAAAA', 'BBBB', 'CCC', 'DDDD', 'EEEE', 'FFFF'],
+            callBack: function(idx) {
+                console.log(idx)
+            }
+        })
+    </script>
+</body>
+</html>
