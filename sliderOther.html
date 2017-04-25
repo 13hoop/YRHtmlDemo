@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>轮播</title>
+    <style>
+        .page {
+            margin: 0 auto;
+            width: 1000px;
+            background: #eeeeee;
+        }
+        .bannerOther {
+            margin: 0 auto;
+        }
+        .clearFix:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .bannerOther .wrapView .bottomDiv .indicator .indicatorCell {
+            background: #e7e1cd;
+        }
+        .bannerOther .wrapView .bottomDiv .indicator .indicatorCell.selected {
+            background: #c7171e;
+        }
+
+    </style>
+    <script src="jQuery2.1.js"></script>
+</head>
+<body>
+<div class="page">
+    <!--<div class="banner">
+        <div class="wrapView">
+            <a ddd='first' class="cell" href="#">
+                <img src="https://images.apple.com/v/home/df/images/heroes/iphone7_productred_small_2x.png">
+            </a>
+            <a class="cell" href="#">
+                <img src="https://images.apple.com/cn/home/images/heroes/ipad_small_2x.jpg">
+            </a>
+            <a ddd='last' class="cell" href="#">
+                <img src="https://images.apple.com/cn/home/images/heroes/watch_small_2x.jpg">
+            </a>
+        </div>
+    </div>-->
+    <p>
+    辐射（英语：Fallout）是黑岛工作室与Interplay Entertainment公司开发与发行的一系列经典电脑角色扮演游戏游戏。虽然游戏时间设定22世 纪，但故事背景和艺术风格深受20世纪50年代核恐慌的影响。首作发布于1997年。有时候该系列被称为是1988年出版的游戏：《荒野游侠   （Wasteland）精神上的续作，但《荒野游侠》属于艺电版权，而且故事不是发生在同样的游戏世界里。游戏系列包括数个角色扮演游戏版本，1997年发  行的《辐射》，1998年的《辐射2》，2008年的《辐射3》到2015年的《辐射4》，以及2010年的《辐射：新维加斯》，一个策略游《辐射战略版：钢铁   兄弟会》，一个游戏机的动作冒险游戏《辐射：钢铁兄弟会》以及其他一些支线游戏等。2001年的PC Gamer杂志排名，《射》和《辐射2》排在所有计算  机游戏里的第四位。[1]
+    </p>
+    <p>    
+    《辐射》、《辐射2》、和《辐射战略版：钢铁兄弟会》使用仿3D建模的图形引擎，用等角投影（Isometric projection）的45度倾角画面的平面图   形。《辐射》和《辐射2》采用开放性设计，拥有非常高的自由度。
+    </p> 
+    <p> 
+    在2003年黑岛工作室解散之后，Bethesda Softworks购买了所有制作《辐射》系列游戏的权利。《辐射3》和《辐射4》即由Bethesda开发。 [2]   [3]Interplay在2年内还拥有制作《辐射》大型多人在线游戏的权利。
+    </p>
+    <div class="bannerOther">
+        <!--<a ddd='first' class="cell" href="#">
+            <img src="https://images.apple.com/v/home/df/images/heroes/iphone7_productred_small_2x.png" >
+        </a>
+        <a class="cell" href="#">
+            <img src="https://images.apple.com/cn/home/images/heroes/ipad_small_2x.jpg">
+        </a>
+        <a ddd='last' class="cell" href="#">
+            <img src="https://images.apple.com/cn/home/images/heroes/watch_small_2x.jpg">
+        </a>-->
+
+        <a ddd='fff' class="cell" href="">00<img src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg" alt="" ></a>
+        <a class="cell" href="">01<img src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg" alt="" ></a>
+        <a class="cell" href="">02<img src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg" alt="" ></a>
+        <a ddd='lll' class="cell" href="">03<img src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg" alt="" ></a>
+    </div>
+<script>
+
+    var SliderBanner = function(target, width, auto, callback) {
+        this.$target = $(target)
+        this.width = width
+        this.auto = auto
+        this.indexPage = 0
+        var timer_auto
+        this.timer_auto = timer_auto
+        this.callback = callback
+        
+        this.init();
+        this.bind();
+        this.autoPlay();
+    }
+
+    // init: btn + cell + bottomDiv(indicator)
+    SliderBanner.prototype.init = function(){
+        var $cells = this.$target.children().wrapAll('<div class="wrapView clearFix"></div>')
+        $cells.wrapAll('<div class="out clearFix"></div>')
+        var $wrapView = this.$target.children().css({
+            "position": "relative",
+            "background": "#f2f2f2",
+            "width": this.width + 'px',
+            "overflow": "hidden",
+            "margin":"0 auto"
+        })
+        // btn
+        $('<a class="btn btn-pre" href="">&lt;' + '</a>').appendTo($wrapView)
+        $('<a class="btn btn-next" href="">&gt;' + '</a>').appendTo($wrapView)
+        $wrapView.find('.btn').css({
+            "text-decoration": "none",
+            "background": "gray",
+            "opacity": "0.5",
+            "display": "block",
+            "height": "100%",
+            "width": "30px",
+            "text-align": "center",
+            "line-height": "100%",
+            "position": "absolute",
+            "top": "0px",
+            "bottom": "0px",
+        })
+
+        $wrapView.find('.btn-pre').css('left', '0px')
+        $wrapView.find('.btn-next').css('right', '0px')
+        // cell
+        $cells.css({
+            "float": " left",
+            "width": this.width + "px",
+            "text-align": "center",
+            "display":"block"
+        })
+        // bottomDiv(indicator)
+        var bottomDivHtml = '<div class="bottomDiv"></div>'
+        var indicatorHtml = '<div class="indicator clearFix"></div>'
+        var indicatorCellHtml = '<div class="indicatorCell"></div>'
+        $wrapView.append(bottomDivHtml)
+        var $bottomDiv = $('.bottomDiv')
+        $bottomDiv.append(indicatorHtml)
+        var $indicator = $('.indicator').css({
+            "display": "flex",
+            "justify-content": "center"
+        })
+        for (var i = 0; i < $cells.length; i++) {
+            $indicator.append(indicatorCellHtml)
+        }
+        $bottomDiv.css({
+            "position": "absolute",
+            "bottom": "0px",
+            "left": "0px",
+            "right": "0px"
+        })
+        $indicatorCell = $('.indicatorCell').css({
+            "border-radius": "5px",
+            "float": "left",
+            "width": "30px",
+            "height": "10px",
+            "margin": "5px 5px",
+        })
+
+        var $out = $wrapView.find('.out')
+        $out.prepend($cells.last().clone())
+        $out.append($cells.first().clone())
+        var totalCount = $wrapView.find('.out').children().length
+        $out.css({
+            "position": "relative",
+            "left": (0 - this.width) + 'px',
+            "width": this.width * totalCount,
+        })
+        $indicatorCell.eq(0).addClass('selected')
+    }
+    SliderBanner.prototype.play = function(mgl) {
+        var _this = this
+          console.log('>>> ' + mgl)
+        var n = mgl || 0
+        if (_this.timer_auto) {
+            window.clearInterval(_this.timer_auto)
+        }
+        var $out = this.$target.find('.out')
+        var $cells = $out.find('.cell')
+        console.log($cells.length)
+        var width = this.width
+        $out.stop(true, true).animate({
+            'margin-left': (-1) * n * width + 'px',
+        }, 'slow', function () {
+            _this.indexPage = n
+            if(n == ($cells.length - 2)) {
+                _this.indexPage = 0
+            }
+            if(n == -1) {
+                _this.indexPage = $cells.length - 2 - 1
+            }
+            $out.css({
+                'margin-left': (-1) * _this.indexPage * width + 'px',
+            })
+            _this.autoPlay()
+         console.log('down: indexPage= ' + _this.indexPage)
+            $out.closest('.wrapView').find('.indicator .indicatorCell').eq(_this.indexPage).addClass('selected').siblings('.selected').removeClass('selected')
+        })
+    }
+    SliderBanner.prototype.autoPlay = function(){
+        var _this = this 
+        if (this.auto === true) {
+            _this.timer_auto = setInterval(function () {
+                _this.play(++_this.indexPage)
+            }, 2000)
+        }
+    }    
+    SliderBanner.prototype.bind = function(){
+        var _this = this  
+        var $out = this.$target.find('.out')
+        this.$target.find('.btn-pre').on('click', function (e) {
+            e.preventDefault()
+            _this.play(--_this.indexPage)
+        })
+        this.$target.find('.btn-next').on('click', function (e) {
+            e.preventDefault()
+            _this.play(++_this.indexPage)
+        })
+        $out.closest('.wrapView').find('.indicator').on('click', '.indicatorCell', function (e) {
+            _this.play($(e.currentTarget).index())
+            $(e.currentTarget).addClass('selected').siblings('.selected').removeClass('selected')
+        })
+
+        this.$target.find('.out').on('mouseenter', '.cell', function (e) {
+            window.clearInterval(_this.timer_auto)
+        }).on('mouseleave', '.cell', function (e) {
+            _this.autoPlay()
+        })
+    }
+
+    new SliderBanner($('.bannerOther'), 480, false, function() {
+        console.log('call back code !')
+    })
+</script>
+</div>
+</body>
+</html>
+
+
+        <!--<a ddd='fff' class="cell" href="">00<img src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg" alt="" ></a>
+        <a class="cell" href="">01<img src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg" alt="" ></a>
+        <a class="cell" href="">02<img src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg" alt="" ></a>
+        <a ddd='lll' class="cell" href="">03<img src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg" alt="" ></a>-->
