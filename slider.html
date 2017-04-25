@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>轮播</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .banner {
+            margin: 0 auto;
+            width: 1000px;
+            background: #eeeeee;
+        }
+        .clearFix:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .banner .wrapView .bottomDiv .indicator {
+            display: flex;
+            justify-content: center;
+        }
+        .banner .wrapView .bottomDiv .indicator .indicatorCell {
+            background: #e7e1cd;
+        }
+        .banner .wrapView .bottomDiv .indicator .indicatorCell.selected {
+            background: #c7171e;
+        }
+    </style>
+    <script src="jQuery2.1.js"></script>
+</head>
+<body>
+<div class="banner">
+    <a ddd='fff' class="cell" href="">00<img src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg" alt="" ></a>
+    <a class="cell" href="">01<img src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg" alt="" ></a>
+    <a class="cell" href="">02<img src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg" alt="" ></a>
+    <a ddd='lll' class="cell" href="">03<img src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg" alt="" ></a>
+</div>
+<p>
+    元字符^（和数字6在同一个键位上的符号）和$都匹配一个位置，这和\b有点类似。^匹配你要用来查找的字符串的开头，$匹配结尾。这两个代码在验证输入的内容时非常有用，比如一个网站如果要求你填写的QQ号必须为5位到12位数字时，可以使用：^\d{5,12}$。
+    这里的{5,12}和前面介绍过的{2}是类似的，只不过{2}匹配只能不多不少重复2次，{5,12}则是重复的次数不能少于5次，不能多于12次，否则都不匹配。
+    因为使用了^和$，所以输入的整个字符串都要用来和\d{5,12}来匹配，也就是说整个输入必须是5到12个数字，因此如果输入的QQ号能匹配这个正则表达式的话，那就符合要求了。
+    和忽略大小写的选项类似，有些正则表达式处理工具还有一个处理多行的选项。如果选中了这个选项，^和$的意义就变成了匹配行的开始处和结束处。</p>
+<script>
+    $.fn.slides = function (opt) {
+        $banner = $(this)
+        var width = opt.width
+        var height = opt.height
+        $cells = $banner.children().wrapAll('<div class="wrapView clearFix"></div>')
+        $cells.wrapAll('<div class="out clearFix"></div>')
+        $wrapView = $banner.children().css({
+            "position": "relative",
+            "background": "lightblue",
+            "overflow": "hidden",
+            "width": width,
+            "height": height
+        })
+        // btn
+        $btn_pre = $('<a class="btn btn-pre" href="">&lt;' + '</a>').appendTo($wrapView)
+        $btn_next = $('<a class="btn btn-next" href="">&gt;' + '</a>').appendTo($wrapView)
+        $wrapView.find('.btn').css({
+            "text-decoration": "none",
+            "background": "lightgray",
+            "opacity": "0.5",
+            "display": "block",
+            "height": "100%",
+            "width": "30px",
+            "text-align": "center",
+            "line-height": "100%",
+            "position": "absolute",
+            "top": "0px",
+            "bottom": "0px",
+        })
+        $wrapView.find('.btn-pre').css('left', '0px')
+        $wrapView.find('.btn-next').css('right', '0px')
+        // cell
+        $cells.css({
+            "float": " left",
+            "width": width + "px",
+            "height": height + "px",
+            "text-align": "center",
+            "display":"block"
+        })
+        // bottomDiv - indicator
+        var bottomDivHtml = '<div class="bottomDiv"></div>'
+        var indicatorHtml = '<div class="indicator clearFix"></div>'
+        var indicatorCellHtml = '<div class="indicatorCell"></div>'
+        $wrapView.append(bottomDivHtml)
+        var $bottomDiv = $('.bottomDiv')
+        $bottomDiv.append(indicatorHtml)
+        var $indicator = $('.indicator')
+        for (var i = 0; i < $cells.length; i++) {
+            $indicator.append(indicatorCellHtml)
+        }
+        $bottomDiv.css({
+            "position": "absolute",
+            "background": "#03b791",
+            "bottom": "0px",
+            "left": "0px",
+            "right": "0px"
+        })
+        $indicatorCell = $('.indicatorCell').css({
+            "border-radius": "5px",
+            "float": "left",
+            "width": "30px",
+            "height": "10px",
+            "margin": "5px 5px",
+        })
+        var index = 0
+        $out = $wrapView.find('.out')
+        $out.prepend($cells.last().clone())
+        $out.append($cells.first().clone())
+        var totalCount = $wrapView.find('.out').children().length
+        $out.css({
+            "position": "relative",
+            "left": (0 - width) + 'px',
+            "width": width * totalCount,
+        })
+        $indicatorCell.eq(0).addClass('selected')
+        $btn_next.on('click', function (e) {
+            e.preventDefault()
+            play(++index)
+        })
+        $btn_pre.on('click', function (e) {
+            e.preventDefault()
+            play(--index)
+        })
+        var timer_auto
+        var autoPlay = function () {
+            timer_auto = setInterval(function () {
+                play(++index)
+            }, 2000)
+        }
+        if (opt.auto) {
+            autoPlay()
+        }
+        $out.on('mouseenter', '.cell', function (e) {
+            window.clearInterval(timer_auto)
+        }).on('mouseleave', '.cell', function (e) {
+            autoPlay()
+        })
+        function play(mgl) {
+//            console.log('>>> ' + mgl)
+            var n = mgl || 0
+            if (timer_auto) {
+                window.clearInterval(timer_auto)
+            }
+            $out.stop(true, true).animate({
+                'margin-left': (-1) * n * width + 'px',
+            }, 'slow', function () {
+                index = n
+                if(n == $cells.length) {
+                    index = 0
+                }
+                if(n == -1) {
+                    index = $cells.length - 1
+                }
+                $out.css({
+                    'margin-left': (-1) * index * width + 'px',
+                })
+                autoPlay()
+//                console.log('down: index= ' + index)
+                $out.closest('.wrapView').find('.indicator .indicatorCell').eq(index).addClass('selected').siblings('.selected').removeClass('selected')
+            })
+        }
+        $indicator.on('click', '.indicatorCell', function (e) {
+            play($(e.currentTarget).index())
+            $(e.currentTarget).addClass('selected').siblings('.selected').removeClass('selected')
+        })
+    }
+    $('.banner').slides({
+        width: 480,
+        height: 360,
+        auto: false
+    })
+</script>
+</body>
+</html>
