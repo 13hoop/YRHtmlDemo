@@ -230,98 +230,114 @@
         </ul>
     </div>
     <script>
-        var Explode = function ($target, callback) {
-            this.$target = $target
-            this.callback = callback
-            this.check()
-            this.bind()
-        }
-        Explode.prototype.bind = function () {
-            var _this = this
-            var clock
-            $(window).on('scroll', function (e) {
-                if (clock) {
-                    clearTimeout(clock)
-                }
-                clock = setTimeout(function () {
-                    console.log('hello')
-                    _this.check()
-                }, 100)
-            })
-        }
-        Explode.prototype.isVisible = function () {
-            var height_win = $(window).height()
-            var scrolled = $(window).scrollTop()
-            var height = this.$target.height()
-            var offTop = this.$target.offset().top
-            if (height_win + scrolled >= offTop && offTop + height >= scrolled) {
-                return true
-            } else {
-                return false
-            }
-        }
-        Explode.prototype.check = function() {
-            if(this.isVisible(this.$target)) {
-                this.callback(this.$target)
-            }
-        }
+        // var Explode = function ($target, callback) {
+        //     this.$target = $target
+        //     this.callback = callback
+        //     this.check()
+        //     this.bind()
+        // }
+        // Explode.prototype.bind = function () {
+        //     var _this = this
+        //     var clock
+        //     $(window).on('scroll', function (e) {
+        //         if (clock) {
+        //             clearTimeout(clock)
+        //         }
+        //         clock = setTimeout(function () {
+        //             console.log('hello')
+        //             _this.check()
+        //         }, 100)
+        //     })
+        // }
+        // Explode.prototype.isVisible = function () {
+        //     var height_win = $(window).height()
+        //     var scrolled = $(window).scrollTop()
+        //     var height = this.$target.height()
+        //     var offTop = this.$target.offset().top
+        //     if (height_win + scrolled >= offTop && offTop + height >= scrolled) {
+        //         return true
+        //     } else {
+        //         return false
+        //     }
+        // }
+        // Explode.prototype.check = function() {
+        //     if(this.isVisible(this.$target)) {
+        //         this.callback(this.$target)
+        //     }
+        // }
 
-        $('.container img').each(function (k, img) {
-            var $value = $(img)
-            new Explode($value, function ($target) {
-                var url = $value.attr('data-src')
-                if ($value.hasClass('loaded')) return
-                console.log(k + '~~~')
-                $value.attr('src', url)
-                $value.addClass('loaded')
-            })
+        // $('.container img').each(function (k, img) {
+        //     var $value = $(img)
+        //     new Explode($value, function ($target) {
+        //         var url = $value.attr('data-src')
+        //         if ($value.hasClass('loaded')) return
+        //         console.log(k + '~~~')
+        //         $value.attr('src', url)
+        //         $value.addClass('loaded')
+        //     })
+        // })
+
+        var Explode =(function () {
+    var _Explode = function ($target, callback) {
+        this.$target = $target
+        this.callback = callback
+        this.check()
+        this.bind()
+    }
+    _Explode.prototype.bind = function () {
+        var _this = this
+        var clock // 模拟网络延伸
+        $(window).on('scroll', function (e) {
+            if (clock) {
+                clearTimeout(clock)
+            }
+            clock = setTimeout(function () {
+                console.log('hello')
+                _this.check()
+            }, 100)
         })
+    }
+    _Explode.prototype.isVisible = function () {
+        var height_win = $(window).height()
+        var scrolled = $(window).scrollTop()
+        var height = this.$target.height()
+        var offTop = this.$target.offset().top
+        if (height_win + scrolled >= offTop && offTop + height > scrolled) {
+            return true
+        } else {
+            return false
+        }
+    }
+    _Explode.prototype.check = function () {
+        if (this.isVisible(this.$target)) {
+            this.callback(this.$target)
+        }
+    }
+
+    return {
+        init: function(targets, callback) {
+            $(targets).each(function(idx , target){
+                new _Explode($(target), callback) 
+            })
+        },
+        // once: function(targets, callback) {
+        //     $(targets).each(function(idx , target){
+        //         new _Explode($(target), callback) 
+        //     })
+        // }
+    }
+
+})()
+
+Explode.init($('.container img'), function($elNode) {
+    var url = $elNode.attr('data-src')
+    if ($elNode.hasClass('loaded')) return
+    $elNode.attr('src', url)
+    $elNode.addClass('loaded')
+})
 
 
-    // var isVisible = function () {
-    //     var height_win = $(window).height()
-    //     var height = $e.height()
-    //     var offTop = $e.offset().top
-    //     var scrolled = $(window).scrollTop()
-    //     if (height_win + scrolled >= offTop && offTop + height >= scrolled) {
-    //         return true
-    //     } else {
-    //         return false
-    //     }
-    // }
-    // var clock
-    // lazyRender()
-    // $(window).on('scroll', function (e) {
-    //     if(clock){
-    //         clearTimeout(clock)
-    //     }
-    //     clock = setTimeout(function(){
-    //         console.log('hello')
-    //         lazyRender()
-    //     }, 100)
-    // })
-
-    // Explode.prototype.init = function() {
-    //     this.callback(this.$target)
-    // }
-    // new Explode($('#hello'), function($el) {
-    //     $('#world').text('hello ' +  $('#world').text())
-    // })
-
-    // var lazyRender = function() {
-    //     $imgs = $('.container img')
-    //     $imgs.each(function (k, value) {
-    //         var $value = $(value)
-    //         var url = $value.attr('data-src')
-    //         if ($value.hasClass('loaded')) return
-    //         if(isVisible($value)) {
-    //             console.log(k + '~~~')
-    //             $value.attr('src', url)
-    //             $value.addClass('loaded')
-    //         }
-    //     })
-    // }
-
+ 
     </script>
 </body>
 </html>
