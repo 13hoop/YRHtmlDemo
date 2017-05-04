@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>瀑布流布局</title>
+    <script src="jQuery2.1.js"></script>
+    <!--<script src="http://localhost:63342/JS-jirengu%20note/jQuery2.1.js"></script>-->
+    <style>
+        .wallFlow {
+            position: relative;
+            max-width: 1010px;
+            background: #eeeeee;
+            margin: 20px auto;
+            border: 1px solid #9d1300;
+        }
+        
+        .flickr {
+            width: 800px;
+            margin: 0 auto;
+            border: 1px dashed goldenrod;
+            background: royalblue;
+        }
+        
+        .img-box {
+            float: left;
+            /*border: 1px deepskyblue solid;*/
+        }
+        
+        .clearFix:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        
+        .cell {
+            float: left;
+            position: absolute;
+            margin: 10px;
+        }
+        
+        .aaa {
+            width: 300px;
+            height: 100px;
+            background: #03b791;
+        }
+        
+        .bbb {
+            width: 400px;
+            height: 200px;
+            background: #3bffaa;
+        }
+        
+        .ccc {
+            width: 600px;
+            height: 800px;
+            background: #acbee4;
+        }
+        
+        .ddd {
+            width: 600px;
+            height: 100px;
+            background: #ab171e;
+        }
+        
+        .eee {
+            width: 200px;
+            height: 600px;
+            background: #312a99;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flickr"></div>
+
+    <p>瀑布流布局是一种比较流行的页面布局方式，最典型的就是Pinterest.com，每个卡片的高度不都一样，形成一种参差不齐的美感。 在HTML5中，我们可以找到很多基于jQuery之类实现的瀑布流布局插件，轻松做出这样的布局形式。在微信小程序中，我们也可以做出这样的效果，不过由于小程序框架的一些
+        特性，在实现思路上还是有一些差别的。
+    </p>
+    <div class="wallFlow clearFix">
+        <div class="cell aaa">0</div>
+        <div class="cell bbb">1</div>
+        <div class="cell ccc">2</div>
+        <div class="cell ddd">3</div>
+        <div class="cell eee">4</div>
+        <div class="cell aaa">5</div>
+        <div class="cell bbb">6</div>
+        <div class="cell ccc">7</div>
+        <div class="cell ddd">8</div>
+        <div class="cell eee">9</div>
+        <div class="cell aaa">10</div>
+        <div class="cell bbb">11</div>
+        <div class="cell ccc">12</div>
+        <div class="cell ddd">13</div>
+        <div class="cell eee">14</div>
+        <div class="cell ccc">15</div>
+        <div class="cell ddd">16</div>
+        <div class="cell ccc">17</div>
+        <div class="cell ddd">18</div>
+        <div class="cell eee">19</div>
+        <div class="cell ccc">20</div>
+        <div class="cell ddd">21</div>
+        <div class="cell bbb">22</div>
+    </div>
+    <script>
+        /*
+        - 1 ajax-loadDatas
+        - 2 justify element with predHeight
+        - 3 layout per Row, if too wide, justify currentRow elements
+        */
+
+        $flickr = $('.flickr')
+        // 1 ajax-loadDatas
+        var resluts = [
+            {
+                // wdith: "412",
+                // height: "275",
+                url: "http://c1.staticflickr.com/3/2880/33864492791_8231e87989.jpg"
+            },
+            {
+                // wdith: "335",
+                // height: "224",
+                url: "http://c1.staticflickr.com/3/2826/33609965560_b5e3026661.jpg"
+            },
+            {
+                // wdith: "337",
+                // height: "224",
+                url: "http://c1.staticflickr.com/3/2933/33181056303_2f3eb130e3.jpg"
+            },
+            {
+                // wdith: "336",
+                // height: "224",
+                url: "http://c1.staticflickr.com/3/2923/33843915962_622f0c4c79.jpg"
+            },
+            {
+                // wdith: "345",
+                // height: "276",
+                url: "http://c1.staticflickr.com/3/2814/33996006565_c5a462d09b.jpg"
+            },
+            {
+                // wdith: "277",
+                // height: "276",
+                url: "http://c1.staticflickr.com/3/2873/33842615112_9a285a293a.jpg"
+            },
+            {
+                // wdith: "386",
+                // height: "276",
+                url: "http://c1.staticflickr.com/3/2826/33960436266_88898a17b8.jpg"
+            },
+            {
+                // wdith: "312",
+                // height: "208",
+                url: "http://c1.staticflickr.com/3/2909/33146955834_1b4ec99f5f.jpg"
+            },
+            {
+                // wdith: "312",
+                // height: "208",
+                url: "http://c1.staticflickr.com/3/2844/33993439575_50beebf9a9.jpg"
+            },
+            {
+                // wdith: "384",
+                // height: "208",
+                url: "http://c1.staticflickr.com/3/2819/33840960752_e4910761be.jpg"
+            },
+            {
+                // wdith: "399",
+                // height: "266",
+                url: "http://c1.staticflickr.com/3/2942/33181379533_d4b50f1ef6.jpg"
+            },
+            {
+                // wdith: "399",
+                // height: "266",
+                url: "http://c1.staticflickr.com/3/2917/33826955322_8bc6178676.jpg"
+            },
+            {
+                // wdith: "210",
+                // height: "266",
+                url: "http://c1.staticflickr.com/3/2813/33835099182_89103c052b_m.jpg"
+            }
+        ]
+
+        // 2 justify element with predHeight
+        var preJustify = function (preHeight, elm) {
+            var orign_H = elm.height
+            var orign_W = elm.width
+            var preElm = {
+                elm: elm,
+                height: preHeight,
+                width: orign_W * preHeight / orign_H
+            }
+            return preElm
+        }
+
+        // creat row
+        function createAndLayoutInRow(rowHeight) {
+            console.log(' here ! ')
+            var row = $('<div class="row clearFix"></div>')
+            $.each(rowList, function (idx, rowCell) {
+                var $imgCt = $('<div class="img-box"></div>')
+                var $elm = $(rowCell.elm)
+                $elm.height(rowHeight)
+                $imgCt.append($elm)
+                row.append($imgCt)
+            })
+            console.log(row)
+            $flickr.append(row)
+        }
+
+
+        // render element
+        var rowList = []
+        var flickrWidth = $flickr.width()
+        var renderElm = function (info) {
+            var rowSum = 0
+            var _rowHeight = 0
+            var lastInfo = info
+            rowList.push(info)
+            var _rowList = this.rowList
+
+            console.log('in render: ' + info)
+            $.each(_rowList, function (idx, elmInfo) {
+                rowSum += elmInfo.width // [1,2,3]
+                console.log('compare rs: ' + rowSum + ' flcW: '+ flickrWidth)
+                if (rowSum > flickrWidth) {
+                    
+                    console.log('🚗')
+
+                    // 去除最后一个,得到完整的一行
+                    _rowList.pop()                                   // [1,2]
+                    var _k = flickrWidth / (rowSum - lastInfo.width)
+                    _rowHeight = elmInfo.height * _k
+                    // 创建行，并对行内所有元素调整
+                    createAndLayoutInRow(_rowHeight)
+
+                    rowList = []
+                    rowList.push(lastInfo)                         // [3]
+                }
+            })
+        }
+
+
+        // create elements
+        $.each(resluts, function (idx, infoData) {
+            var imgUrl = infoData.url
+            var img = new Image()
+            img.onload = function () {
+                // console.log(img)
+                var preHeight = 200
+                var preElm = preJustify(preHeight, img)
+                renderElm(preElm)
+            }
+            img.src = imgUrl
+        })
+    </script>
+    <script>
+        function layout(setWidth) {
+            var $wallFlowDiv = $('.wallFlow')
+            var $cells = $wallFlowDiv.find('.cell')
+            var getMinMax = function (arr) {
+                var minIndex = 0, maxIndex = 0
+                var minValue = arr[minIndex]
+                var maxValue = minValue
+                var resule = {}
+                for (i = 1; i < arr.length; i++) {
+                    if (minValue > arr[i]) {
+                        minValue = arr[i]
+                        minIndex = i
+                    }
+                    if (maxValue < arr[i]) {
+                        maxValue = arr[i]
+                        maxIndex = i
+                    }
+                }
+                resule.max = maxIndex
+                resule.min = minIndex
+                return resule
+            }
+
+            var colNum = parseInt($wallFlowDiv.outerWidth() / setWidth)
+
+            var tempArr = []
+
+            for (var i = 0; i < colNum; i++) {
+                tempArr[i] = 0
+            }
+
+            $cells.each(function (index) {
+                var showHeight = parseInt($(this).outerHeight() * setWidth / $(this).outerWidth())
+                var r = getMinMax(tempArr)
+                var minIndex = r.min
+                var minValue = tempArr[minIndex]
+
+                var maxIndex = r.max
+                var maxValue = tempArr[maxIndex]
+
+                $(this).css({
+                    'width': setWidth + 'px',
+                    'height': showHeight + 'px',
+                    'top': tempArr[minIndex] + 0 + 'px',
+                    'left': setWidth * minIndex + 0 + 'px'
+                })
+                $(this).closest('.wallFlow').css('height', maxValue + 'px')
+                tempArr[minIndex] += showHeight
+            })
+        }
+        layout(200)
+        $(window).on('resize', function (e) {
+            layout(200)
+        })
+    </script>
+</body>
+
+</html>
