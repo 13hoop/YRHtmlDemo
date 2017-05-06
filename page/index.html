@@ -11,6 +11,10 @@
             margin: 0;
             background-image: url(https://c1.staticflickr.com/5/4173/34422289046_98b02c8ecf_k.jpg);
         }
+        a {
+            text-decoration: none;
+            color: white;
+        }
         .clearFix::after {
             content: '';
             display: block;
@@ -82,14 +86,16 @@
         <div class="clearFix">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Fallout_logo.svg/500px-Fallout_logo.svg.png" alt="">
             <ul class="clearFix">
-                <li>首页</li>
-                <li>内容</li>
-                <li>图片墙</li>
-                <li>关于</li>
+                <li>
+                    <a href="#banner">Top</a>
+                </li>
+                <li><a href="#page">内容</a></li>
+                <li><a href="#pic">图片墙</a></li>
+                <li><a href="">关于</a></li>
             </ul>
         </div>
     </div>
-    <div class="banner">
+    <div id="banner" class="banner">
         <a href="#">
 	        <img src="https://c1.staticflickr.com/5/4178/34422698596_3a37686be5_b.jpg" alt="">
         </a>
@@ -102,8 +108,14 @@
         <a  href="#">
 	        <img src="https://c1.staticflickr.com/5/4155/33621704254_3754a9d986_h.jpg" alt="">
         </a>
+        <a  href="#">
+	        <img src="https://c1.staticflickr.com/5/4192/34304292712_57a7d44f16_h.jpg" alt="">
+        </a>
+        <a  href="#">
+	        <img src="https://c1.staticflickr.com/5/4185/34304297062_90b456a79d_h.jpg" alt="">
+        </a>
     </div>
-    <div class="page">
+    <div id="page" class="page">
         <h2>FallOut</h2>
         <p>
             <strong>辐射（英语：Fallout）</strong>是黑岛工作室与Interplay Entertainment公司开发与发行的一系列经典电脑角色扮演游戏游戏。虽然游戏时间设定为22世纪，但故事背景和艺术风格深受20世纪50年代核恐慌的影响。首作发布于1997年。有时候该系列被称为是1988年出版的游戏：《荒野游侠》（Wasteland）精神上的续作，但《荒野游侠》属于艺电版权，而且故事不是发生在同样的游戏世界里。游戏系列包括数个角色扮演游戏版本，从1997年发行的《辐射》，1998年的《辐射2》，2008年的《辐射3》到2015年的《辐射4》，以及2010年的《辐射：新维加斯》，一个策略游戏《辐射战略版：钢铁兄弟会》，一个游戏机的动作冒险游戏《辐射：钢铁兄弟会》以及其他一些支线游戏等。2001年的PC
@@ -127,7 +139,7 @@
         <p>避难所是游戏的重要设定。避难所由避难所科技公司设计和建造，每一个避难所足以容纳1000人，并且能自给自足。预见了大战的来临，美国政府在2054年开始了大规模的建造辐射避难所。然而政府总共只建立了122个避难所，远远不够保护全美国的人口。实际上，这些避难所不是常态避难所，秘密进行残酷而不人道的社会试验。(从中挑选出最先进的人类重建核战后的社会)，是政府为了进行特定的社会实验而建立的假目的,去诱惑自愿人士参加其项目,自投罗网。
         </p>
 
-        <div class="waterFlow clearFix"></div>
+        <div id="pic" class="waterFlow clearFix"></div>
 
 
     </div>
