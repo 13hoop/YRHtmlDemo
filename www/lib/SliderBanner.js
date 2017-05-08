@@ -12,7 +12,6 @@ define(['jquery'], function ($) {
         this.bind();
         this.autoPlay();
     }
-
     // init: btn + cell + bottomDiv(indicator)
     _SliderBanner.prototype.initElement = function () {
         var $cells = this.$target.children().wrapAll('<div class="wrapView-SliderBanner clearFix"></div>')

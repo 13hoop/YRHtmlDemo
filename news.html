@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>news like sspai</title>
+    <style>
+        * {margin: 0;padding: 0}
+        html {
+            font-size: 16px;
+            font-family: -apple-system,BlinkMacSystemFont,PingFang-SC-Regular,Hiragino Sans GB,Microsoft Yahei,Arial,sans-serif;
+        }
+        .page {
+            width: 800px;
+            margin: 0 auto;
+            background: #eeeeee;
+            padding: 0px;
+        }
+        button {
+            width: 100%;
+            visibility: hidden;
+        }
+        .container {
+            list-style: none;
+            margin: 0 auto;
+            width: 700px;
+        }
+
+        .container li {
+            border: 1px solid #dbe2e8;
+            border-radius: 2px;
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(46,61,73,.08);
+            padding: 20px;
+            margin: 10px auto;
+            transition: border .3s ease-in-out;
+            text-align: center;
+        }
+        .container li > a {
+            text-decoration: none;
+        }
+        .container li > a > h3 {
+            text-align: left;
+        }
+
+        .container li > a > p {
+            color: #0f0f0f;
+            text-align: left;
+        }
+        .container li > a > img {
+            width: 100%;
+        }
+        .container > p {
+            text-align: center;
+            font-size: 30px;
+            color: #c7171e;
+        }
+    </style>
+</head>
+<body>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <div class="page">
+        <ul class='container'>
+        </ul>
+    <button>loadmore...</button>
+    </div>
+    <script>
+        var $btn = $('button')
+        var $ul = $('.container')
+
+        var allDone = false
+        var indexPage = 0
+        var endLoading = false
+        
+        var off_e = $btn.offset().top
+        var h_e = $btn.height()
+        var h_w = $(window).height()
+        var s_w = $(window).scrollTop()
+        getNews()
+        getNews()
+        
+        $(window).on('scroll', function (e) {
+            // console.log('>>> ' + $btn.offset().top + ' -- ' +  ($(window).scrollTop()+ $(window).height()) )
+            if(allDone) return
+            if(shouldLoading($btn) && endLoading) {
+                endLoading = false
+                console.log('loading data here')
+                getNews()
+            }
+        })
+
+        function getNews() {
+            var url = '/getNews'
+            indexPage++
+            $.get(url, {page: indexPage})
+            .done(function(res){
+                var html = randerHtml(res.data)
+                $ul.append(html)
+                // console.log('ccc' + $btn.offset().top)
+                endLoading = true
+            })
+            .fail(function() {
+                alert('network error!')
+                endLoading = true
+            })
+        }
+
+        var randerHtml = function(data) {
+            if (data.length <= 0) {
+                allDone = true
+                return '<p>no more data</p>'
+            }
+            var html = ''
+            $.each(data, function(index, jsonData) {
+                var href = jsonData['link']
+                var img_src = jsonData['img']
+                var title = jsonData['title']
+                var brif = jsonData['brif']
+                html += '<li class="loaded">'
+                html += '<a href=' + href + '>'
+                html += '<img src=' + img_src + '>'
+                html += '<h3>' + title + '</h3>'
+                html += '<p>' + brif + '</p>'
+                html += '</a>'
+                html += '</li>'
+            })
+            return html
+        }
+
+        function shouldLoading($e) {
+            var e_offTop = $e.offset().top
+            var e_height = $e.height()
+            var w_height = $(window).height()
+            var w_scrolled = $(window).scrollTop()
+            if(e_offTop <= w_scrolled + w_height && w_scrolled + w_height <= e_offTop + e_height) {
+                return true
+            } else {
+                return false
+            }
+        }
+    </script>
+</body>
+</html>

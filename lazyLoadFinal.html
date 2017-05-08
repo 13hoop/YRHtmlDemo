@@ -298,7 +298,7 @@
         })
     }
     _Explode.prototype.isVisible = function () {
-        var height_win = $(window).height()
+        var height_win = window.height
         var scrolled = $(window).scrollTop()
         var height = this.$target.height()
         var offTop = this.$target.offset().top

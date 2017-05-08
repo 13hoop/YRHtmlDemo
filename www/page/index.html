@@ -11,10 +11,12 @@
             margin: 0;
             background-image: url(https://c1.staticflickr.com/5/4173/34422289046_98b02c8ecf_k.jpg);
         }
+
         a {
             text-decoration: none;
             color: white;
         }
+
         .clearFix::after {
             content: '';
             display: block;
@@ -54,18 +56,20 @@
         .page {
             background: #f3f5f6;
             margin: 0px auto;
+            margin-top: 30px;
             width: 1000px;
             box-shadow: 0rem 1rem 4rem 1rem #10fe1b;
         }
 
-        .page h2 {
+        h2 {
             text-align: center;
-            font-size: 40px;
-            margin: 10px
+            margin: 10px 0px;
+            color: #000;
+            background: rgba(107, 250, 115, 0.8);
         }
 
         .page>p {
-            margin: 0px 10px;
+            margin: 10px 10px;
         }
 
         .banner {
@@ -76,7 +80,36 @@
         }
 
         .waterFlow {
-            margin: 20px;
+            margin: 10px;
+            border: 4px solid #10fe1b;
+        }
+
+        .newsWall {
+            position: relative;
+            background: lightgreen;
+            /*height: 1000px;*/
+        }
+
+        .container:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .container {
+            list-style: none;
+            text-align: center;
+        }
+
+        .container li {
+            width: 50%;
+            float: left;
+        }
+
+        .container li img {
+            width: 400px;
+            height: 300px;
+            border: 2px solid red;
         }
     </style>
 </head>
@@ -90,8 +123,8 @@
                     <a href="#banner">Top</a>
                 </li>
                 <li><a href="#page">内容</a></li>
-                <li><a href="#pic">图片墙</a></li>
-                <li><a href="#">关于</a></li>
+                <li><a href="#pic">flickr</a></li>
+                <li><a href="#lazyPic">懒加载</a></li>
             </ul>
         </div>
     </div>
@@ -102,16 +135,16 @@
         <a href="#">
 	        <img src="https://c1.staticflickr.com/5/4165/34078735770_79d1b0f3b1_b.jpg" alt="">
         </a>
-        <a  href="#">
+        <a href="#">
 	        <img src="https://c1.staticflickr.com/5/4168/34422708866_ce61e23f36_h.jpg" alt="">
         </a>
-        <a  href="#">
+        <a href="#">
 	        <img src="https://c1.staticflickr.com/5/4155/33621704254_3754a9d986_h.jpg" alt="">
         </a>
-        <a  href="#">
+        <a href="#">
 	        <img src="https://c1.staticflickr.com/5/4192/34304292712_57a7d44f16_h.jpg" alt="">
         </a>
-        <a  href="#">
+        <a href="#">
 	        <img src="https://c1.staticflickr.com/5/4185/34304297062_90b456a79d_h.jpg" alt="">
         </a>
     </div>
@@ -138,10 +171,140 @@
         <h3>避难所</h3>
         <p>避难所是游戏的重要设定。避难所由避难所科技公司设计和建造，每一个避难所足以容纳1000人，并且能自给自足。预见了大战的来临，美国政府在2054年开始了大规模的建造辐射避难所。然而政府总共只建立了122个避难所，远远不够保护全美国的人口。实际上，这些避难所不是常态避难所，秘密进行残酷而不人道的社会试验。(从中挑选出最先进的人类重建核战后的社会)，是政府为了进行特定的社会实验而建立的假目的,去诱惑自愿人士参加其项目,自投罗网。
         </p>
-
-        <div id="pic" class="waterFlow clearFix"></div>
     </div>
-    <script src="/lib/require.js" data-main="/lib/main"></script>
+
+    <h2>Picture Wall</h2>
+    <div id="pic" class="waterFlow clearFix"></div>
+
+    <div id="lazyPic">
+        <ul class="container">
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg">
+                </a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/5.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/6.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/7.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/8.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/9.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/10.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/11.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/12.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/13.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/14.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/15.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/16.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/12.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/13.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/14.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/15.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/16.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/5.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/6.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/7.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/8.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/9.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/10.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/11.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/12.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/13.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/14.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/15.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/16.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg"></a>
+            </li>
+            <li>
+                <a href="#"><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/5.jpg"></a>
+            </li>
+        </ul>
+    </div>
+    <script src="/www/tools/require.js" data-main="/www/dist/merge"></script>
 </body>
 
-</html>
+</html> 
