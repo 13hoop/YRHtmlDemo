@@ -1,7 +1,7 @@
 // __dirname 是nodeJS的全局变量，指代当前脚本目录
 module.exports = {
     devtool: 'eval-source-map', // 生成source-map
-    entry: __dirname + "/app/main.js",
+    entry: __dirname + "/lib/main.js",
     output: {
         path: __dirname + "/public",
         filename: "bundle.js"
