@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js 探索</title>
+</head>
+
+<body>
+
+    <script>
+        var Module = (function () {
+            var name = 'module001'
+            var doSomeThing = function () {
+                console.log(name + ' is ' + ' do something here!')
+            }
+            return { moduleName: name, moduleFun: doSomeThing }
+        }
+        )()
+
+        console.log(Module.moduleName)
+        Module.moduleFun()
+    </script>
+    <script>
+        var ObjName = function (property, Func) {
+            this.property = property
+            this.Func = Func // 实例方法
+        }
+        ObjName.prototype.objFunc = function () {
+            console.log('Object func is doing something!')
+        }
+
+        var foo = function () { console.log('Instance function doing somthing') }
+        var obj001 = new ObjName('age', foo)
+        // console.log(obj001)
+        obj001.objFunc()
+        obj001.Func()
+    </script>
+    <script>
+        var factory = function (property, instanceFunc) {
+            var obj = {
+                'property': property,
+                'func': instanceFunc  // 实例方法
+            }
+            return obj
+        }
+
+        // 调用
+        var foo = function () { console.log('Instance function doing somthing') }
+        var obj = factory('xxx', foo) // Instance function doing somthing
+        obj.func()
+    </script>
+    <script>
+        var Person = function (name, age, job) {
+            this.name = name
+            this.age = age
+            this.job = job
+        }
+        Person.prototype = {
+            construtor: Person,
+            info: function () {
+                console.log(this.name + " - (" + this.age + ") ~ job " + this.job)
+            }
+        }
+
+        var p1 = new Person('tony', '42', 'iron man')
+        var p2 = new Person('长者', '90', '蛤...')
+
+        p1.info() // tony - (42) ~ job iron man
+        p2.info() // 长者 - (90) ~ job 蛤...
+    </script>
+    <script>
+        var Singleton = (function (atrr) {
+            var instance
+            var init = function (atrr) {
+                this.atrr = atrr
+                this.foo = function () {
+                    console.log(atrr)
+                }
+                return {
+                    atrr: atrr,
+                    foo: foo
+                }
+            }
+
+            return {
+                sharedInstance: function (atrr) {
+                    if (!instance) {
+                        instance = init(atrr)
+                    }
+                    return instance
+                }
+            }
+        })()
+        console.log(Singleton)
+        var s1 = Singleton.sharedInstance('111')
+        s1.foo() // '111'
+        var s2 = Singleton.sharedInstance('222')
+        s2.foo() // '111'
+        console.log(s1 === s2) // true
+    </script>
+
+    <script>
+        // 发布订阅模式: 一个事件可以有多个订阅者
+        var Observer = {
+            events: {},
+            addFor: function (eventName, fn) {
+                this.events[eventName] = this.events[eventName] || []
+                this.events[eventName].push(fn)
+            },
+            off: function (eventName) {
+                delete this.events[eventName]
+            },
+            go: function (eventName, data) {
+                if (!this.events[eventName]) return
+                this.events[eventName].forEach(function (fn) {
+                    fn(data)
+                })
+            }
+        }
+        Observer.addFor('001', function (data) {
+            console.log(data + ' do something here!')
+        })
+        Observer.addFor('001', function (data) {
+            console.log(data + ' do other something here!')
+        })
+
+        var xxx = function (data) {
+            console.log(data)
+        }
+        Observer.addFor('002', xxx)
+        Observer.off('002', function (data) {
+            console.log(data + ' off the observe')
+        })
+        Observer.go('001', 'this is 001')
+        Observer.go('002', 'this is 002')
+
+
+        // 封装一下
+        var Event = (function () {
+            var t = {}
+            var on = function (name, fn) {
+                t[name] = t[name] || []
+                t[name].push(fn)
+            }
+            var off = function (name) {
+                delete t[name]
+            }
+            var fire = function (name, data) {
+                if (!t[name]) return
+                t[name].forEach(function(fn) {
+                    fn(data)
+                })
+            }
+            return {
+                on: on,
+                off: off,
+                fire: fire
+            }
+        })()
+
+        Event.on('change', function(val){
+            console.log('change...  now val is ' + val);  
+        })
+        Event.fire('change', '饥人谷')
+        Event.off('changer')
+        Event.fire('change', '只执行最后一次')
+    </script>
+    <script>
+        var extend = function (S, F) {
+            var T = function () { }
+            T.prototype = F.prototype
+            S.prototype = new T()
+            S.prototype.constructor = S
+        }
+
+        var Person = function (name) {
+            this.name = name
+        }
+        Person.prototype.getName = function () {
+            console.log(this.name)
+        }
+
+        var Author = function (name, book) {
+            Person.call(this, name)
+            this.book = book
+            Author.prototype.constructor = Author
+        }
+        extend(Author, Person)
+        Author.prototype = Person.prototype
+        Author.prototype.getBook = function () {
+            console.log(this.book)
+            return this.book
+        }
+
+        var martin = new Author('Martin', 'Game Of Throne')
+        console.dir(martin)
+    </script>
+</body>
+
+</html>
